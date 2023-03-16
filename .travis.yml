@@ -1,0 +1,34 @@
+stages: # define the order and conditions for stages
+  - name: test
+  - name: deploy
+    if: branch = master AND type != pull_request
+# can be written these ways too
+# stages:
+#   - test
+#   - deploy
+
+# stages:
+#   - compile
+#   - test
+#   - name: deploy
+#     if: branch = master
+
+jobs:
+  include:
+    - stage: test # assign a job to a stage
+      services: # specify the services for this job
+        - mysql
+        - redis
+      env: # specify the environment variables for this job
+        - FOO=foo
+        - BAR=bar
+      script: 
+       - some test command
+    - stage: deploy
+      services:
+        - docker
+      env:
+        - BAZ=baz
+        - QUX=qux
+      script: 
+       - docker build 
