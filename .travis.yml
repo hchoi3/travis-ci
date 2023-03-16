@@ -18,5 +18,7 @@ jobs:
       env:
         - BAZ=baz
         - QUX=qux
+      before_script:
+       - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
       script: 
        - docker push hchoi3/demo:v1
