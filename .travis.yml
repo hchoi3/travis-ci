@@ -1,29 +1,17 @@
 stages: # define the order and conditions for stages
-  - name: test
-  - name: deploy
-    if: branch = master AND type != pull_request
-# can be written these ways too
-# stages:
-#   - test
-#   - deploy
-
-# stages:
-#   - compile
-#   - test
-#   - name: deploy
-#     if: branch = master
+  - build
+  - deploy
 
 jobs:
   include:
-    - stage: test # assign a job to a stage
+    - stage: build # assign a job to a stage
       services: # specify the services for this job
-        - mysql
-        - redis
+        - docker
       env: # specify the environment variables for this job
         - FOO=foo
         - BAR=bar
       script: 
-       - some test command
+       - docker build -t hchoi3/demo . 
     - stage: deploy
       services:
         - docker
@@ -31,4 +19,4 @@ jobs:
         - BAZ=baz
         - QUX=qux
       script: 
-       - docker build 
+       - docker push hchoi3/demo:v1
